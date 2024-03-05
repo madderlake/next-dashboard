@@ -1,5 +1,10 @@
 import { Card, Text, Title } from '@tremor/react';
-import Search from '@/components/Search';
+import dynamic from 'next/dynamic';
+
+/* import Search dynamically b/c Search references the window object directly */
+const DynamicSearch = dynamic(() => import('../components/Search'), {
+  ssr: false,
+});
 import UsersTable from '@/components/UsersTable';
 import prisma from '@/lib/prisma';
 type Props = {
@@ -29,7 +34,7 @@ export default async function Home({ searchParams }: Props) {
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
       <Title>Users</Title>
       <Text>A table of users retrieved from our Postgres database.</Text>
-      <Search />
+      <DynamicSearch />
       <Card className="mt-6">
         <UsersTable users={users} />
       </Card>
