@@ -60,9 +60,12 @@ const dataCategories = data.map((item) => item.category);
 export default function Analytics() {
   const views = ['Donut', 'Bar List', 'Bar'];
 
-  const [view, setView] = useState('Donut');
-  const handleSelect = (e: SyntheticEvent) => {
+  const [view, setView] = useState<string>('Donut');
+  const [active, setActive] = useState<number>(0);
+
+  const handleSelect = (e: SyntheticEvent, index: number) => {
     setView(e.currentTarget.innerHTML);
+    setActive(index);
   };
   const numFormatter = (number: number) =>
     Intl.NumberFormat('us').format(number).toString();
@@ -74,8 +77,10 @@ export default function Analytics() {
           {views.map((view, i) => (
             <li
               key={i}
-              className="cursor-pointer"
-              onClick={(e) => handleSelect(e)}>
+              className={`cursor-pointer${
+                active === i ? ' text-blue-600 font-bold ' : ''
+              }`}
+              onClick={(e) => handleSelect(e, i)}>
               {view}
             </li>
           ))}
