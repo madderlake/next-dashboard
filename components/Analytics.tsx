@@ -22,7 +22,7 @@ const website = [
 ];
 
 const shop = [
-  { name: 'home', value: 453 },
+  { name: 'home', value: 587 },
   { name: 'imprint', value: 351 },
   { name: 'shop', value: 271 },
   { name: 'pricing', value: 191 },
@@ -41,51 +41,29 @@ const data = [
     category: 'Website',
     stat: '10,234',
     data: website,
+    view: 'Donut',
   },
   {
     category: 'Online Shop',
     stat: '12,543',
     data: shop,
+    view: 'Bar',
   },
   {
     category: 'Mobile App',
     stat: '2,543',
     data: app,
+    view: 'Bar List',
   },
 ];
 
-const dataCategories = data.map((item) => item.category);
-// const dataCategories = Object.values(data.map((item) => item.data));
-
 export default function Analytics() {
-  const views = ['Donut', 'Bar List', 'Bar'];
-
-  const [view, setView] = useState<string>('Donut');
-  const [active, setActive] = useState<number>(0);
-
-  const handleSelect = (e: SyntheticEvent, index: number) => {
-    setView(e.currentTarget.innerHTML);
-    setActive(index);
-  };
   const numFormatter = (number: number) =>
     Intl.NumberFormat('us').format(number).toString();
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <div className="p-4 mb-4 flex bg-slate-100">
-        <ul className="flex justify-between w-1/4 text-tremor-default">
-          {views.map((view, i) => (
-            <li
-              key={i}
-              className={`cursor-pointer${
-                active === i ? ' text-blue-600 font-bold ' : ''
-              }`}
-              onClick={(e) => handleSelect(e, i)}>
-              {view}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <div className="p-4 mb-4 flex bg-slate-100"></div>
       <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
         {data.map((item, i) => (
           <Card key={item.category}>
@@ -101,12 +79,13 @@ export default function Analytics() {
               <Text>Pages</Text>
               <Text className="text-right">Views</Text>
             </Flex>
-            {view === 'Donut' && (
+            {item.view === 'Donut' && (
               <>
                 <DonutChart
                   data={item.data}
                   valueFormatter={numFormatter}
-                  className="mt-2"
+                  index="name"
+                  className="mt-2 h-60"
                 />
                 <Legend
                   categories={Object.values(item.data.map((page) => page.name))}
@@ -115,31 +94,29 @@ export default function Analytics() {
                 />
               </>
             )}
-            {view === 'Bar List' && (
+            {item.view === 'Bar List' && (
               <>
                 <BarList
                   data={item.data}
                   valueFormatter={numFormatter}
-                  className="mt-2"
+                  className="mt-14"
                 />
               </>
             )}
-            {view === 'Bar' && (
+            {item.view === 'Bar' && (
               <>
                 <BarChart
                   data={item.data}
                   valueFormatter={numFormatter}
                   index={'name'}
                   categories={['value']}
-                  layout="vertical"
-                  // categories={Object.values(item.data.map((page) => page.name))}
                 />
               </>
             )}
           </Card>
         ))}
       </Grid>
-      {/* <Chart /> */}
+      <Chart />
     </main>
   );
 }
