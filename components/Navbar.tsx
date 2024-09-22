@@ -10,8 +10,8 @@ import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
 import { Session } from 'next-auth';
 const navigation = [
-  { name: 'Analytics', href: '/analytics' },
-  { name: 'Users', href: '/' },
+  { name: 'Analytics', href: '/' },
+  { name: 'Users', href: '/users' },
 ];
 
 function classNames(...classes: string[]) {
